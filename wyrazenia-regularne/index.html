@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+const logs = "ERROR [2026-03-18] User: admin - Connection failed; INFO [2026-03-18] User: guest - Login success; ERROR [2026-03-19] User: root - Disk full;";
+
+const dates = logs.match(/\d{4}-\d{2}-\d{2}/g);
+console.log("Daty:", dates.join(", "));
+
+const users = logs.match(/User:\s(\w+)/g).map(u => u.replace("User: ", ""));
+console.log("Użytkownicy:", users.join(", "));
+
+const errorCount = (logs.match(/ERROR/g) || []).length;
+console.log("Liczba ERROR:", errorCount);
+
+const entries = logs.split(";").filter(e => e.trim());
+
+const result = entries.map(e => ({
+  type: e.includes("ERROR") ? "ERROR" : "INFO",
+  user: e.split("User: ")[1].split(" ")[0]
+}));
+
+console.log("Obiekty:");
+result.forEach(r => console.log(`${r.type}, ${r.user}`));
+</script>
+</body>
+</html>
